@@ -56,15 +56,6 @@ task Archive {
 	Move-Item -Path $release_dir\*.* -Destination $archive_dir
 }
 
-task Zip Version, {
-	$release_zip_file = "$release_dir\$project_name.$Version.zip"
-	$7z = Get-ChildItem -recurse $src_dir\packages -include 7za.exe | Sort-Object LastWriteTime -descending | Select-Object -First 1
-	
-	Write-Host "Zipping release to: " $release_zip_file
-	
-	exec { & $7z a $release_zip_file $build_output_dir\$project_name\lib\net45\* -mx9 }
-}
-
 task NuGet Package, Version, {
 
 	Write-Host ================= Preparing $project_name Nuget package =================
@@ -106,4 +97,4 @@ task NuGet Package, Version, {
 	}
 }
 
-task . Init, Build, Package, Zip, NuGet
+task . Init, Build, Package, NuGet
